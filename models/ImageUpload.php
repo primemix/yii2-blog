@@ -6,6 +6,10 @@ use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
+/**
+ * Class ImageUpload
+ * @package app\models
+ */
 class ImageUpload extends Model
 {
     public $image;
@@ -18,6 +22,11 @@ class ImageUpload extends Model
         ];
     }
 
+    /**
+     * @param UploadedFile $file
+     * @param $currentImageName
+     * @return string
+     */
     public function uploadFile(UploadedFile $file, $currentImageName)
     {
         $this->image = $file;
@@ -29,16 +38,25 @@ class ImageUpload extends Model
         }
     }
 
+    /**
+     * @return string
+     */
     private function getFolder()
     {
         return Yii::getAlias('@web') . 'uploads/';
     }
 
+    /**
+     * @return string
+     */
     private function generateFilename()
     {
         return strtolower(md5(uniqid($this->image->baseName)) . '.' . $this->image->extension);
     }
 
+    /**
+     * @param $currentImageName
+     */
     public function deleteCurrentImage($currentImageName)
     {
         if ($this->fileExists($currentImageName)) {
@@ -46,6 +64,10 @@ class ImageUpload extends Model
         }
     }
 
+    /**
+     * @param $currentImageName
+     * @return bool
+     */
     public function fileExists($currentImageName)
     {
         if (!empty($currentImageName) && $currentImageName != null) {
@@ -53,6 +75,9 @@ class ImageUpload extends Model
         }
     }
 
+    /**
+     * @return string
+     */
     public function saveImage()
     {
         $filename = $this->generateFilename();
